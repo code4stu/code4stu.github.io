@@ -53,17 +53,16 @@ index.html這個 HTML 文件是一個簡單的網頁，包含了一些樣式和�
 <body>
     <div class="button-container">
         <button onclick="location.href='./take photos/take_photo.html'">take photo</button>
-        <button onclick="location.href='./area/area.html'">area</button>
-        <button onclick="location.href='test_camera.html'">test_camera</button>
+        <button onclick="location.href='./area/area.html'">area</button>        
     </div>
 </body>
 </html>
 ```
 這部分是網頁的主要內容：
 - `<body>` 包含了一個 `div`，類名為 `button-container`，用來容納按鈕。
-- 三個按鈕分別使用 `onclick` 事件來改變 `location.href`，即點擊按鈕後會跳轉到對應的 HTML 頁面：
+- 二個按鈕分別使用 `onclick` 事件來改變 `location.href`，即點擊按鈕後會跳轉到對應的 HTML 頁面：
   - "take photo" 按鈕跳轉到 `./take photos/take_photo.html`
   - "area" 按鈕跳轉到 `./area/area.html`
-  - "test_camera" 按鈕跳轉到 `test_camera.html`
+  
 
-這個網頁的主要功能是提供三個按鈕，用戶可以點擊這些按鈕來導航到不同的頁面。
+這個網頁的主要功能是提供二個按鈕，用戶可以點擊這些按鈕來導航到不同的頁面。
