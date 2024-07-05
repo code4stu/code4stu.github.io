@@ -1,5 +1,3 @@
-當然，以下是這三個檔案的詳細說明：
-
 1. **area.html**：
    ```html
    <!DOCTYPE html>
@@ -86,8 +84,8 @@
      - `.controls`：調整控制項的排列和間距。
 
 3. **script.js**：
-      ```javascript
-function calculateArea(color) {
+   ```javascript
+    function calculateArea(color) {
     const poly = polygons[color][polygons[color].length - 1];
     if (poly.length < 3 || calibrationRatio === null) return;
 
