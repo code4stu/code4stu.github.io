@@ -1,5 +1,6 @@
 const canvas = document.getElementById('drawingCanvas');
 const ctx = canvas.getContext('2d');
+const clearButton = document.getElementById('clearButton');
 
 let drawing = false;
 
@@ -21,7 +22,7 @@ function draw(event) {
     const x = (event.clientX || event.touches[0].clientX) - rect.left;
     const y = (event.clientY || event.touches[0].clientY) - rect.top;
 
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 2;
     ctx.lineCap = 'round';
     ctx.strokeStyle = 'black';
 
@@ -29,6 +30,10 @@ function draw(event) {
     ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(x, y);
+}
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 // Mouse events
@@ -40,3 +45,6 @@ canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('touchstart', startDrawing);
 canvas.addEventListener('touchend', stopDrawing);
 canvas.addEventListener('touchmove', draw);
+
+// Clear button event
+clearButton.addEventListener('click', clearCanvas);
