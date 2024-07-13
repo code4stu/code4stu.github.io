@@ -43,14 +43,17 @@ function handleImage(e) {
     reader.readAsDataURL(e.target.files[0]);
 }
 
+// 滑鼠事件
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', endDrawing);
 
+// 觸控事件
 canvas.addEventListener('touchstart', startDrawingTouch);
 canvas.addEventListener('touchmove', drawTouch);
 canvas.addEventListener('touchend', endDrawingTouch);
 
+// 獲取觸控位置
 function getTouchPos(canvas, touchEvent) {
     var rect = canvas.getBoundingClientRect();
     return {
