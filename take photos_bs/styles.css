@@ -10,8 +10,8 @@
 }
 #frame {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 5;
+    left: 5;
     width: 115px;
     height: 85px;
     border: 3px dashed green;
