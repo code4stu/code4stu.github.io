@@ -159,26 +159,26 @@ function drawPinkDashedRectangle() {
 
 
 // 監聽觸控事件
-canvas.addEventListener('touchstart', startDrawing);
-canvas.addEventListener('touchmove', draw);
-canvas.addEventListener('touchend', endDrawing);
+canvas.addEventListener('touchstart', startDrawingTouch);
+canvas.addEventListener('touchmove', drawTouch);
+canvas.addEventListener('touchend', endDrawingTouch);
 
 // 開始繪製多邊形（觸控版）
-function startDrawing(event) {
+function startDrawingTouch(event) {
     event.preventDefault(); // 防止滑動時捲動頁面
     drawing = true;
     points = [{ x: event.touches[0].clientX, y: event.touches[0].clientY }];
 }
 
 // 繪製多邊形（觸控版）
-function draw(event) {
+function drawTouch(event) {
     if (!drawing) return;
     points.push({ x: event.touches[0].clientX, y: event.touches[0].clientY });
     redraw();
 }
 
 // 結束繪製多邊形（觸控版）
-function endDrawing(event) {
+function endDrawingTouch(event) {
     drawing = false;
     points.push({ x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY });
     let color = colorPicker.value;
