@@ -163,29 +163,42 @@ canvas.addEventListener('touchstart', startDrawingTouch);
 canvas.addEventListener('touchmove', drawTouch);
 canvas.addEventListener('touchend', endDrawingTouch);
 
+// 定義 getRelativeTouchPos 函數
+function getRelativeTouchPos(event) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: (event.touches[0].clientX - rect.left) * (canvas.width / rect.width),
+        y: (event.touches[0].clientY - rect.top) * (canvas.height / rect.height)
+    };
+}
+
 // 開始繪製多邊形（觸控版）
 function startDrawingTouch(event) {
     event.preventDefault(); // 防止滑動時捲動頁面
     drawing = true;
-    points = [{ x: event.touches[0].clientX, y: event.touches[0].clientY }];
+    let pos = getRelativeTouchPos(event);
+    points = [{ x: pos.x, y: pos.y }];
 }
 
 // 繪製多邊形（觸控版）
 function drawTouch(event) {
     if (!drawing) return;
-    points.push({ x: event.touches[0].clientX, y: event.touches[0].clientY });
+    let pos = getRelativeTouchPos(event);
+    points.push({ x: pos.x, y: pos.y });
     redraw();
 }
 
 // 結束繪製多邊形（觸控版）
 function endDrawingTouch(event) {
     drawing = false;
-    points.push({ x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY });
+    let pos = getRelativeTouchPos(event);
+    points.push({ x: pos.x, y: pos.y });
     let color = colorPicker.value;
     if (!polygons[color]) {
         polygons[color] = [];
     }
     polygons[color].push([...points]);
+    console.log(`Calculating area for color: ${color}`);
     calculateArea(color);
     points = [];
     redraw();
