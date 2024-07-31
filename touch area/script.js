@@ -40,9 +40,9 @@ function handleImage(e) {
     reader.readAsDataURL(e.target.files[0]);
 }
 
-//canvas.addEventListener('mousedown', startDrawing);
-//canvas.addEventListener('mousemove', draw);
-//canvas.addEventListener('mouseup', endDrawing);
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', endDrawing);
 
 function startDrawing(event) {
     drawing = true;
