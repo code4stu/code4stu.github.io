@@ -198,6 +198,7 @@ function endDrawingTouch(event) {
         polygons[color] = [];
     }
     polygons[color].push([...points]);
+    console.log(`Calculating area for color: ${color}`);
     calculateArea(color);
     points = [];
     redraw();
