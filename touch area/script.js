@@ -182,6 +182,7 @@ function startDrawingTouch(event) {
 
 // 繪製多邊形（觸控版）
 function drawTouch(event) {
+    event.preventDefault(); // 防止滑動時捲動頁面
     if (!drawing) return;
     let pos = getRelativeTouchPos(event);
     points.push({ x: pos.x, y: pos.y });
@@ -191,8 +192,8 @@ function drawTouch(event) {
 // 結束繪製多邊形（觸控版）
 function endDrawingTouch(event) {
     drawing = false;
-    let pos = getRelativeTouchPos(event);
-    points.push({ x: pos.x, y: pos.y });
+    //let pos = getRelativeTouchPos(event);
+    //points.push({ x: pos.x, y: pos.y });
     let color = colorPicker.value;
     if (!polygons[color]) {
         polygons[color] = [];
