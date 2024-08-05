@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+    <link rel="manifest" href="/manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首頁</title>
@@ -36,8 +37,20 @@
     <div class="button-container">
         <button onclick="location.href='./take photos/take_photo.html'">take photo</button>
         <button onclick="location.href='./area/area.html'">area</button>
-        <button onclick="location.href='./touch area/touch_area.html'">touch area</button>
-        <button onclick="location.href='./take photos_bs/take_photo_bs.html'">take photo bs</button>
+        <button onclick="location.href='./touch area/touch_area.html'">touch_area</button>
+        <button onclick="location.href='test_camera.html'">test_camera</button>
     </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
 </body>
 </html>
