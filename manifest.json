@@ -19,10 +19,22 @@
   ],
   "screenshots": [
     {
-      "src": "screenshots/screenshot1.png",
+      "src": "screenshots/screenshot1-wide.png",
       "sizes": "1024x768",
       "type": "image/png",
       "form_factor": "wide"
+    },
+    {
+      "src": "screenshots/screenshot2-narrow.png",
+      "sizes": "640x1136",
+      "type": "image/png"
+      // Note: This screenshot does not have "form_factor" set, which is acceptable
+    },
+    {
+      "src": "screenshots/screenshot3.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
     }
   ]
 }
