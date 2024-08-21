@@ -1,41 +1,17 @@
 {
-  "name": "Code4Stu",
-  "short_name": "C4S",
+  "short_name": "Aardvark",
+  "name": "Aardvark: the app for aardvarks (add to homescreen test page)",
   "display": "standalone",
-  "id": "/?source=pwa"
-  "start_url": "/?source=pwa",  
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "id": "/?source=pwa",
+  "start_url": "/?source=pwa",
   "icons": [
-    {
-      "src": "icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "screenshots/screenshot1-wide.png",
-      "sizes": "1024x768",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "screenshots/screenshot2-narrow.png",
-      "sizes": "640x1136",
-      "type": "image/png"
-      // Note: This screenshot does not have "form_factor" set, which is acceptable
-    },
-    {
-      "src": "screenshots/screenshot3.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow"
-    }
+      {
+          "src": "apple-touch-icon.png",
+          "sizes": "any",
+          "type": "image/png",
+          "purpose": "any"
+      }
   ]
 }
+
+  
