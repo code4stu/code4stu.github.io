@@ -1,0 +1,450 @@
+<!-- Example web app with add to homescreen implemented.  JS in test-page.js -->
+<!-- 示範網頁應用程式，包含將應用程式添加到主屏幕的功能。JavaScript 實現於 test-page.js 文件中 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<!-- 定義文件類型為 HTML 並設定語言為英文 -->
+
+<head>
+  <!-- ====================  BEGIN: These headers required for any webapp  ==================== -->
+  <!-- ====================  開始：任何網頁應用程式必需的標頭 ==================== -->
+
+  <meta charset="utf-8">
+  <!-- 設定網頁的字符編碼為 UTF-8 -->
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <!-- 設定視口的屬性以適應各種裝置。限制縮放並啟用 viewport-fit 以在覆蓋顯示上顯示全屏 -->
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- 允許網頁應用在 iOS 設備上以全屏模式運行 -->
+
+  <title>Zhifa</title> <!-- replace with your web app title-->
+  <!-- 設置網頁應用的標題，可以替換成你的應用名稱 -->
+
+  <link rel="manifest" href="manifest.json">
+  <!-- 連結 manifest 文件，這是進行 PWA（Progressive Web App）配置的重要文件 -->
+
+  <!-- ====================  END: These headers required for any webapp  ==================== -->
+  <!-- ====================  結束：任何網頁應用程式必需的標頭 ==================== -->
+
+  <!-- ====================  BEGIN: Include add-to-homescreen resources  ==================== -->
+  <!-- ====================  開始：包含添加到主屏幕的資源 ==================== -->
+
+  <script type="text/javascript" src="./dist/add-to-homescreen.min.js"></script>
+  <!-- 引入實現將應用添加到主屏幕功能的 JavaScript 文件 -->
+
+  <link rel="stylesheet" href="./dist/add-to-homescreen.min.css">
+  <!-- 引入樣式表以設計添加到主屏幕功能的視覺效果 -->
+</head>
+<!-- ====================  END: Include add-to-homescreen resources  ==================== -->
+<!-- ====================  結束：包含添加到主屏幕的資源 ==================== -->
+
+
+<!-- ====================  BEGIN: EXAMPLE WEBSITE CONTENT ==================== -->
+<!-- ====================  開始：示範網站內容 ==================== -->
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+  /* 從 Google Fonts 引入 Inter 字體系列，這些字體可以應用於不同字重 */
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+  /* 設定所有元素及其 ::before 和 ::after 偽元素的盒子模型為 border-box */
+
+  body {
+    font-family: "Inter", sans-serif;
+    /* 設定字體為 "Inter"，備選字體為無襯線字體 */
+    line-height: 1.5;
+    /* 設定行高 */
+    min-height: 100vh;
+    /* 設定最小高度為 100% 視窗高度 */
+    display: flex;
+    /* 使用彈性盒布局 */
+    align-items: center;
+    /* 垂直方向居中對齊 */
+    justify-content: center;
+    /* 水平方向居中對齊 */
+    background-color: #eee;
+    /* 設定背景色為淺灰色 */
+  }
+
+  .menu {
+    padding: 2rem;
+    /* 設定內邊距為 2rem */
+    background-color: #fff;
+    /* 設定背景色為白色 */
+    width: calc(80px + 4 * 70px + 4rem);
+    /* 使用 calc 計算寬度 */
+    display: flex;
+    /* 使用彈性盒布局 */
+    justify-content: center;
+    /* 水平方向居中對齊 */
+    border-radius: 20px 20px;
+    /* 設定邊框半徑為 20px，適用於四個角 */
+    box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.075);
+    /* 設定盒陰影 */
+    position: fixed;
+    /* 設定定位方式為固定定位 */
+    bottom: 0px;
+    /* 固定在視窗底部 */
+    z-index: 9999;
+    /* 設定 z-index 以確保此元素在前端顯示 */
+  }
+
+  .link {
+    display: inline-flex;
+    /* 設定為 inline-flex 顯示模式 */
+    justify-content: center;
+    /* 水平方向居中對齊 */
+    align-items: center;
+    /* 垂直方向居中對齊 */
+    width: 70px;
+    /* 設定寬度為 70px */
+    height: 50px;
+    /* 設定高度為 50px */
+    border-radius: 99em;
+    /* 設定邊框半徑為圓形 */
+    position: relative;
+    /* 設定定位方式為相對定位 */
+    z-index: 1;
+    /* 設定 z-index 以控制堆疊順序 */
+    overflow: hidden;
+    /* 設定隱藏超出容器範圍的內容 */
+    transform-origin: center left;
+    /* 設定變形的原點為左中心 */
+    transition: width 0.2s ease-in;
+    /* 設定寬度變化的過渡效果 */
+    text-decoration: none;
+    /* 移除超連結的下劃線 */
+    color: inherit;
+    /* 繼承父元素的字體顏色 */
+  }
+
+  .link:before {
+    position: absolute;
+    /* 設定定位方式為絕對定位 */
+    z-index: -1;
+    /* 設定 z-index 以控制堆疊順序，使其在其他元素之後 */
+    content: "";
+    /* 設定空白內容，這裡作為背景 */
+    display: block;
+    /* 設定為塊級顯示 */
+    border-radius: 99em;
+    /* 設定邊框半徑為圓形 */
+    width: 100%;
+    /* 設定寬度為 100% */
+    height: 100%;
+    /* 設定高度為 100% */
+    top: 0;
+    /* 設定頂部位置為 0 */
+    transform: translateX(100%);
+    /* 設定水平方向偏移量，使其在視窗之外 */
+    transition: transform 0.2s ease-in;
+    /* 設定變形的過渡效果 */
+    transform-origin: center right;
+    /* 設定變形的原點為右中心 */
+    background-color: #eee;
+    /* 設定背景顏色為淺灰色 */
+  }
+
+  .link:hover,
+  .link:focus {
+    outline: 0;
+    /* 移除焦點時的外框 */
+    width: 130px;
+    /* 當滑鼠懸停或聚焦時，寬度增長到 130px */
+  }
+
+  .link:hover:before,
+  .link:focus:before,
+  .link:hover .link-title,
+  .link:focus .link-title {
+    transform: translateX(0);
+    /* 當滑鼠懸停或聚焦時，將偏移量重置為 0，使背景顯示出來 */
+    opacity: 1;
+    /* 使背景完全不透明 */
+  }
+
+  .link-icon {
+    width: 28px;
+    /* 設定寬度為 28px */
+    height: 28px;
+    /* 設定高度為 28px */
+    display: block;
+    /* 設定為塊級顯示 */
+    flex-shrink: 0;
+    /* 禁止在彈性盒布局中縮小 */
+    left: 18px;
+    /* 設定距離左邊距為 18px */
+    position: absolute;
+    /* 設定定位方式為絕對定位 */
+  }
+
+  .link-icon svg {
+    width: 28px;
+    /* 設定 SVG 圖像寬度為 28px */
+    height: 28px;
+    /* 設定 SVG 圖像高度為 28px */
+  }
+
+  .link-title {
+    transform: translateX(100%);
+    /* 設定水平方向偏移量，使標題初始位置位於視窗之外 */
+    transition: transform 0.2s ease-in;
+    /* 設定變形的過渡效果 */
+    transform-origin: center right;
+    /* 設定變形的原點為右中心 */
+    display: block;
+    /* 設定為塊級顯示 */
+    text-align: center;
+    /* 設定文字居中對齊 */
+    text-indent: 28px;
+    /* 設定文本縮排 */
+    width: 100%;
+    /* 設定寬度為 100% */
+  }
+</style>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap');
+  /* 從 Google Fonts 引入 Lexend 字體系列，這些字體可以應用於不同字重 */
+
+  .card-feed {
+    font-family: "Lexend", sans-serif;
+    /* 設定字體為 "Lexend"，備選字體為無襯線字體 */
+    line-height: 1.5;
+    /* 設定行高 */
+    min-height: 100vh;
+    /* 設定最小高度為 100% 視窗高度 */
+    display: flex;
+    /* 使用彈性盒布局 */
+    align-items: center;
+    /* 垂直方向居中對齊 */
+    justify-content: center;
+    /* 水平方向居中對齊 */
+    color: #393232;
+    /* 設定字體顏色為深灰色 */
+    flex-direction: column;
+    /* 設定彈性盒項目沿著主軸垂直排列 */
+    gap: 15px;
+    /* 設定元素間的間隔 */
+  }
+
+  .card-list figure {
+    margin: 0px 0px;
+    /* 設定 figure 元素的外邊距為 0 */
+  }
+
+  .card-list img {
+    max-width: 100%;
+    /* 設定圖片最大寬度為 100%，以適應容器 */
+    display: block;
+    /* 設定為塊級顯示 */
+  }
+
+  .card-list {
+    width: 90%;
+    /* 設定寬度為 90% */
+    max-width: 400px;
+    /* 設定最大寬度為 400px */
+  }
+
+  .card-list .card {
+    background-color: #FFF;
+    /* 設定背景色為白色 */
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 20px 50px 0 rgba(0, 0, 0, 0.1);
+    /* 設定盒陰影，增加深度效果 */
+    border-radius: 15px;
+    /* 設定邊框半徑為 15px */
+    overflow: hidden;
+    /* 隱藏超出範圍的內容 */
+    padding: 1.25rem;
+    /* 設定內邊距為 1.25rem */
+    position: relative;
+    /* 設定定位方式為相對定位 */
+    transition: 0.15s ease-in;
+    /* 設定過渡效果 */
+  }
+
+  .card-list .card:hover,
+  .card-list .card:focus-within {
+    box-shadow: 0 0 0 2px #16C79A, 0 10px 60px 0 rgba(0, 0, 0, 0.1);
+    /* 當滑鼠懸停或聚焦時，設定盒陰影效果 */
+    transform: translatey(-5px);
+    /* 當滑鼠懸停或聚焦時，將卡片向上移動 5px */
+  }
+
+  .card-list .card-image {
+    border-radius: 10px;
+    /* 設定圖片的邊框半徑為 10px */
+    overflow: hidden;
+    /* 隱藏超出範圍的內容 */
+  }
+
+  .card-list .card-header {
+    margin-top: 1.5rem;
+    /* 設定上外邊距為 1.5rem */
+    display: flex;
+    /* 使用彈性盒布局 */
+    align-items: center;
+    /* 垂直方向居中對齊 */
+    justify-content: space-between;
+    /* 水平方向空間均分 */
+  }
+
+  .card-list .card-header a {
+    font-weight: 600;
+    /* 設定字體粗細為 600 */
+    font-size: 1.375rem;
+    /* 設定字體大小為 1.375rem */
+    line-height: 1.25;
+    /* 設定行高 */
+    padding-right: 1rem;
+    /* 設定右內邊距為 1rem */
+    text-decoration: none;
+    /* 移除超連結的下劃線 */
+    color: inherit;
+    /* 繼承父元素的字體顏色 */
+    will-change: transform;
+    /* 告訴瀏覽器此元素的變形屬性可能會改變 */
+  }
+
+  .card-list .card-header a:after {
+    content: "";
+    /* 設定空白內容 */
+    position: absolute;
+    /* 設定定位方式為絕對定位 */
+    left: 0;
+    /* 設定左邊距為 0 */
+    top: 0;
+    /* 設定頂部位置為 0 */
+    right: 0;
+    /* 設定右邊距為 0 */
+    bottom: 0;
+    /* 設定底部位置為 0 */
+  }
+
+  .card-list .icon-button {
+    border: 0;
+    /* 移除邊框 */
+    background-color: #fff;
+    /* 設定背景顏色為白色 */
+    border-radius: 50%;
+    /* 設定邊框半徑為圓形 */
+    width: 2.5rem;
+    /* 設定寬度為 2.5rem */
+    height: 2.5rem;
+    /* 設定高度為 2.5rem */
+    display: flex;
+    /* 使用彈性盒布局 */
+    padding: 0px;
+    /* 設定內邊距為 0 */
+    justify-content: center;
+    /* 水平方向居中對齊 */
+    align-items: center;
+    /* 垂直方向居中對齊 */
+    flex-shrink: 0;
+    /* 禁止在彈性盒布局中縮小 */
+    font-size: 1.25rem;
+    /* 設定字體大小為 1.25rem */
+    transition: 0.25s ease;
+    /* 設定過渡效果 */
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 3px 8px 0 rgba(0, 0, 0, 0.15);
+    /* 設定盒陰影 */
+    z-index: 1;
+    /* 設定 z-index 以確保此元素在前端顯示 */
+    cursor: pointer;
+    /* 設定鼠標指標為點擊狀態 */
+    color: #565656;
+    /* 設定字體顏色為灰色 */
+  }
+
+  .card-list .icon-button svg {
+    width: 1em;
+    /* 設定 SVG 圖像寬度為 1em */
+    height: 1em;
+    /* 設定 SVG 圖像高度為 1em */
+  }
+
+  .card-list .icon-button:hover,
+  .card-list .icon-button:focus {
+    background-color: #EC4646;
+    /* 當滑鼠懸停或聚焦時，設定背景顏色為紅色 */
+    color: #FFF;
+    /* 當滑鼠懸停或聚焦時，設定字體顏色為白色 */
+  }
+
+  .card-list .card-footer {
+    margin-top: 1.25rem;
+    /* 設定上外邊距為 1.25rem */
+    border-top: 1px solid #ddd;
+    /* 設定頂部邊框為 1px 寬的實線，顏色為淡灰色 */
+    padding-top: 1.25rem;
+    /* 設定上內邊距為 1.25rem */
+    display: flex;
+    /* 使用彈性盒布局 */
+    align-items: center;
+    /* 垂直方向居中對齊 */
+    flex-wrap: wrap;
+    /* 如果內容溢出，則自動換行 */
+  }
+
+  .card-list .card-meta {
+    display: flex;
+    /* 使用彈性盒布局 */
+    align-items: center;
+    /* 垂直方向居中對齊 */
+    color: #787878;
+    /* 設定字體顏色為淺灰色 */
+  }
+
+  .card-list .card-meta:first-child:after {
+    display: block;
+    /* 設定為塊級顯示 */
+    content: "";
+    /* 設定空白內容 */
+    width: 4px;
+    /* 設定寬度為 4px */
+    height: 4px;
+    /* 設定高度為 4px */
+    border-radius: 50%;
+    /* 設定邊框半徑為圓形 */
+    background-color: currentcolor;
+    /* 設定背景顏色為當前字體顏色 */
+    margin-left: 0.75rem;
+    /* 設定左邊距為 0.75rem */
+    margin-right: 0.75rem;
+    /* 設定右邊距為 0.75rem */
+  }
+
+  .card-list .card-meta svg {
+    flex-shrink: 0;
+    /* 禁止在彈性盒布局中縮小 */
+    width: 1em;
+    /* 設定 SVG 圖像寬度為 1em */
+    height: 1em;
+    /* 設定 SVG 圖像高度為 1em */
+    margin-right: 0.25em;
+    /* 設定右邊距為 0.25em */
+  }
+</style>
+
+<body>
+  <!-- 主內容區域 -->
+    
+  <div class="button-container">
+        <div class="button-container">
+        <button onclick="location.href='index_start.html'" 
+                style="background-color: #007bff; 
+                       border: none; 
+                       border-radius: 5px; 
+                       padding: 10px 20px; 
+                       color: white;">Start</button>
+  </div>
+  
+</body>
+</html>
